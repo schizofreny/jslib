@@ -23,7 +23,7 @@
   },
   "scripts": {
     "build": "tsup src/index.ts --format cjs --dts",
-    "dev:example": "tsx example/server.ts",
+    "dev:example": "tsx watch example/server.ts",
     "dev": "pnpm build --watch",
     "lint": "run-p lint:*",
     "lint:eslint": "eslint . --ext .js,.jsx,.ts,.tsx",

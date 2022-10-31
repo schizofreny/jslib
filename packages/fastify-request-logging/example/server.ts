@@ -2,9 +2,9 @@ import Fastify from "fastify"
 import fastifyRouteLogging from "../src/index"
 
 async function start() {
-  const fastify = Fastify({ logger: true })
+  const fastify = Fastify({ logger: true, disableRequestLogging: true })
 
-  await fastify.register(fastifyRouteLogging, {})
+  await fastify.register(fastifyRouteLogging, { logLevel: "info" })
 
   fastify.get("/", async () => ({ hello: "world" }))
 

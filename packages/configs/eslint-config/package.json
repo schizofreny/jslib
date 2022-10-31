@@ -2,6 +2,7 @@
   "name": "@s9y/eslint-config",
   "version": "0.0.0",
   "main": "index.js",
+  "private": true,
   "dependencies": {
     "eslint": "^8.26.0",
     "eslint-config-next": "^13.0.0",

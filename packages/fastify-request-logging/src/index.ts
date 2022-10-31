@@ -1,26 +1,38 @@
 import fp from "fastify-plugin"
 import { matchesGlob } from "./utils"
+// We always need atleast this import, otherwise ts will break
+// import type {} from "fastify"
+// See more here:
 // https://github.com/microsoft/TypeScript/issues/42873
 // https://github.com/microsoft/TypeScript/issues/47663
-import type {} from "fastify"
+import type { LogLevel } from "fastify"
 
 interface Opts {
   disabled?: boolean
   ignoredEndpointGlobs?: string[]
+  logLevel?: LogLevel
 }
-
-const defaultIgnoredEndpointGlobs: NonNullable<Opts["ignoredEndpointGlobs"]> = []
 
 const plugin = fp<Opts>(
   async (fastify, opts) => {
-    const { ignoredEndpointGlobs = defaultIgnoredEndpointGlobs, disabled = false } = opts
+    const { ignoredEndpointGlobs = [], disabled = false, logLevel = "debug" } = opts
 
     fastify.addHook("onRequest", async (req, reply) => {
       if (matchesGlob(req.raw.url, ignoredEndpointGlobs) || disabled) {
         return
       }
 
-      reply.log.debug({ req: req }, "incoming request")
+      reply.log[logLevel](
+        {
+          url: req.url,
+          protocol: req.protocol,
+          method: req.method,
+          hostname: req.hostname,
+          params: req.params,
+          query: req.query,
+        },
+        "incoming request"
+      )
     })
 
     fastify.addHook("onResponse", async (req, reply) => {
@@ -28,7 +40,18 @@ const plugin = fp<Opts>(
         return
       }
 
-      reply.log.debug({ res: reply, responseTime: reply.getResponseTime() }, "request completed")
+      reply.log[logLevel](
+        {
+          url: req.url,
+          protocol: req.protocol,
+          method: req.method,
+          hostname: req.hostname,
+          params: req.params,
+          statusCode: reply.statusCode,
+          responseTime: reply.getResponseTime(),
+        },
+        "request completed"
+      )
     })
   },
   {
