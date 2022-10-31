@@ -67,7 +67,7 @@ importers:
   packages/configs/tsconfig:
     specifiers: {}
 
-  packages/fastify-route-logging:
+  packages/fastify-request-logging:
     specifiers:
       '@s9y/configs-prettier': workspace:*
       '@s9y/eslint-config': workspace:*

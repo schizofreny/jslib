@@ -1,5 +1,5 @@
 {
-  "name": "@s9y/fastify-route-logging",
+  "name": "@s9y/fastify-request-logging",
   "version": "0.1.0",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

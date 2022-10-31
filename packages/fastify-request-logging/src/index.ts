@@ -33,7 +33,7 @@ const plugin = fp<Opts>(
   },
   {
     fastify: ">=4.0.0",
-    name: "@s9y/fastify-route-logging",
+    name: "@s9y/fastify-request-logging",
   }
 )
 
