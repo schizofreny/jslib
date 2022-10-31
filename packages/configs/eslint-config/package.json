@@ -1,0 +1,18 @@
+{
+  "name": "@s9y/eslint-config",
+  "version": "0.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^8.26.0",
+    "eslint-config-next": "^13.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-turbo": "latest",
+    "eslint-plugin-react": "7.31.10"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
