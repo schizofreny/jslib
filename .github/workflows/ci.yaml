@@ -1,0 +1,44 @@
+name: ci
+on:
+  push:
+    branches:
+      # Matches all branch and tag names that don't contain a slash (/).
+      - "*"
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node-version: ["16.17.0", "18.9.0"]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # setup node
+      - name: Setup node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      # setup pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ steps.pnpm-cache.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      # build app
+      - name: Install dependencies
+        run: pnpm i
+      - name: Lint
+        run: pnpm lint
+      - name: Build app
+        run: pnpm build
