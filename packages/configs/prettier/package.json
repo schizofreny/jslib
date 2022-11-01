@@ -1,6 +1,6 @@
 {
   "version": "0.0.1",
-  "name": "@s9y/configs-prettier",
+  "name": "@s9y/prettier-config",
   "main": "index.js",
   "private": true,
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@s9y/fastify-request-logging",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "dependencies": {
@@ -11,7 +11,7 @@
     "fastify": "^4.9.2"
   },
   "devDependencies": {
-    "@s9y/configs-prettier": "workspace:*",
+    "@s9y/prettier-config": "workspace:*",
     "@s9y/eslint-config": "workspace:*",
     "@s9y/tsconfig": "workspace:*",
     "@types/minimatch": "^5.1.2",
