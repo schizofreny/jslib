@@ -5,12 +5,26 @@ import { matchesGlob } from "./utils"
 // See more here:
 // https://github.com/microsoft/TypeScript/issues/42873
 // https://github.com/microsoft/TypeScript/issues/47663
-import type { LogLevel } from "fastify"
+import type { FastifyRequest, LogLevel } from "fastify"
 
 interface Opts {
   disabled?: boolean
   ignoredEndpointGlobs?: string[]
   logLevel?: LogLevel
+}
+
+function getRequestProperties(req: FastifyRequest) {
+  return {
+    id: req.id,
+    url: req.url,
+    protocol: req.protocol,
+    method: req.method,
+    hostname: req.hostname,
+    params: req.params,
+    query: req.query,
+    routerMethod: req.routerMethod,
+    routerPath: req.routerPath,
+  }
 }
 
 const plugin = fp<Opts>(
@@ -23,15 +37,8 @@ const plugin = fp<Opts>(
       }
 
       reply.log[logLevel](
-        {
-          url: req.url,
-          protocol: req.protocol,
-          method: req.method,
-          hostname: req.hostname,
-          params: req.params,
-          query: req.query,
-        },
-        "incoming request"
+        { ...getRequestProperties(req), lifecycle: "request" },
+        `${req.routerMethod} ${req.routerPath}`
       )
     })
 
@@ -41,16 +48,8 @@ const plugin = fp<Opts>(
       }
 
       reply.log[logLevel](
-        {
-          url: req.url,
-          protocol: req.protocol,
-          method: req.method,
-          hostname: req.hostname,
-          params: req.params,
-          statusCode: reply.statusCode,
-          responseTime: reply.getResponseTime(),
-        },
-        "request completed"
+        { ...getRequestProperties(req), responseTime: reply.getResponseTime(), lifecycle: "response" },
+        `${req.routerMethod} ${req.routerPath}`
       )
     })
   },
